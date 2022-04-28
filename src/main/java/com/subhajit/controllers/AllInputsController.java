@@ -31,7 +31,7 @@ public class AllInputsController {
 	 * Both are mandatory
 	 * If any one of them is not provided then exception will be thrown with 400(Bad Request) as ResponseCode
 	 * Key names should be strictly id and name
-	 * RequestParam is implicitly used (if not mentioned explicitly)
+	 * @RequestParam is implicitly used (if not mentioned explicitly)
 	 */	
 	@PostMapping("/spring-form-urlencoded")
 	public ResponseEntity<String> springFormUrlencoded(Integer id, String name) {
@@ -47,7 +47,7 @@ public class AllInputsController {
 	 */	
 	@GetMapping("/spring-querystring")
 	public ResponseEntity<String> springQuerystring(@RequestParam("id") Integer id, @RequestParam("name") String name, HttpServletRequest request) {
-		System.out.println("spring-querystring : " + request.getHeader("country"));
+		System.out.println("spring-querystring");
 		return new ResponseEntity("spring-querystring :: " + id + " - " + name,HttpStatus.OK);
 	}
 	
@@ -83,7 +83,6 @@ public class AllInputsController {
 	@PostMapping(value = "/spring-json", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SuperModel> springJSON(@RequestBody SuperModel superModel) {
 		System.out.println("spring-JSON");
-		System.out.println(superModel);
 		return new ResponseEntity(superModel,HttpStatus.OK);
 	}
 	
@@ -96,7 +95,6 @@ public class AllInputsController {
 	@PostMapping(value = "/spring-XML", consumes=MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
 	public ResponseEntity<SuperModel> springXML(@RequestBody SuperModel superModel) {
 		System.out.println("spring-XML");
-		System.out.println(superModel);
 		return new ResponseEntity(superModel,HttpStatus.OK);
 	}
 		
@@ -109,7 +107,6 @@ public class AllInputsController {
 	@PostMapping(value = "/list-of-supermodel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<SuperModel>> listOfSuperModels(@RequestBody List<SuperModel> superModelList) {
 		System.out.println("list-of-supermodel");
-		System.out.println(superModelList);
 		return new ResponseEntity(superModelList, HttpStatus.OK);
 	}
 	
@@ -122,7 +119,6 @@ public class AllInputsController {
 	@PostMapping(value = "/map-of-supermodel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,SuperModel>> mapOfColleges(@RequestBody Map<String,SuperModel> superModelMap) {
 		System.out.println("map-of-supermodel");
-		System.out.println(superModelMap);
 		return new ResponseEntity(superModelMap,HttpStatus.OK);
 	}
 	

@@ -27,7 +27,7 @@ public class SpringBootInputOutputStorehouseApplication implements WebMvcConfigu
 
 /*
  * This Spring Boot application acts as Web Service. It's controllers contains all
- * input methods and output methods related to spring framework. This web service can be called by any client. This
+ * input techniques and output techniques related to spring framework. This web service can be called by any client. This
  * application will detail in the field of Spring Framework Input taking and
  * output propagating techniques.
  * 

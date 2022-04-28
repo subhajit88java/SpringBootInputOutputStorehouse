@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
+import org.apache.tomcat.util.codec.binary.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -108,7 +108,7 @@ public class ResponseEntityAnalysisController {
 		return "Success!!!";
 	}
 	
-	@GetMapping(value="/test-file-download-hardcode-filepath")
+	@GetMapping(value="/test-file-download-path-resource")
 	public ResponseEntity<Resource> testFileDownloadHardcodeFilepath() throws MalformedURLException {
 		
 		 Path filePath = Paths.get("D:\\Image\\test.jpg").toAbsolutePath().normalize();
@@ -117,37 +117,54 @@ public class ResponseEntityAnalysisController {
 		 MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		 headers.add(HttpHeaders.CONTENT_TYPE, "image/jpg");
 		 headers.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + resource.getFilename() + "\"");
+		 
 		 ResponseEntity<Resource> responseEntity = new ResponseEntity<>(resource,headers,HttpStatus.OK);
 		 return responseEntity;
 	}
 	
-	@GetMapping(value="/test-file-download-inputstream")
+	@GetMapping(value="/test-file-download-inputstream-resource")
 	public ResponseEntity<Resource> testFileDownloadInputstream() throws MalformedURLException, FileNotFoundException {
 		
 		InputStream is = new FileInputStream(new File("D:\\Image\\test.jpg"));
 		InputStreamResource resource = new InputStreamResource(is);
-		System.out.println(resource.getFilename());
 		 
-		 MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		 headers.add(HttpHeaders.CONTENT_TYPE, "image/jpg");
-		 headers.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + "test1.jpg" + "\"");
-		 ResponseEntity<Resource> responseEntity = new ResponseEntity<>(resource,headers,HttpStatus.OK);
-		 return responseEntity;
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add(HttpHeaders.CONTENT_TYPE, "image/jpg");
+		headers.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + "downloaded_file.jpg" + "\"");
+		
+		ResponseEntity<Resource> responseEntity = new ResponseEntity<>(resource,headers,HttpStatus.OK);
+		return responseEntity;
+		
 	}
 	
-	@GetMapping(value="/test-file-download-bytearray")
+	@GetMapping(value="/test-file-bytearray")
 	public ResponseEntity<byte[]> testFileDownloadByteArray() throws IOException {
 		
 		  BufferedImage bImage = ImageIO.read(new File("D:\\Image\\test.jpg"));
 	      ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	      ImageIO.write(bImage, "jpg", bos );
+	      
 	      byte [] data = bos.toByteArray();
 		 
 		 MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		 headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM.toString());
+		 headers.add(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_JPEG.toString());
 		 ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(data,headers,HttpStatus.OK);
+		 return responseEntity;
+	}
+	
+	@GetMapping(value="/test-file-base64-encode-string")
+	public ResponseEntity<String> testFileBase64EncodeString() throws IOException {
+		
+		  BufferedImage bImage = ImageIO.read(new File("D:\\Image\\test.jpg"));
+	      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	      ImageIO.write(bImage, "jpg", bos );
+	      
+	      byte [] data = bos.toByteArray();
+	      String encodedString = Base64.encodeBase64String(data);
+		 
+		 ResponseEntity<String> responseEntity = new ResponseEntity<>(encodedString, HttpStatus.OK);
 		 return responseEntity;
 	}
 }
 
-//This Controller details all the features of ResponseEntity, its approaches to render output
+//This Controller details all the features of ResponseEntity, it's approaches to render output
